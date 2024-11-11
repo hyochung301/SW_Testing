@@ -30,7 +30,7 @@ public class Graph {
     @Override
     public int hashCode() {
         // your code goes here
-        // ...
+        return toString().hashCode();
 
     }
 
@@ -43,40 +43,66 @@ public class Graph {
         // post: returns the number of edges in this
 
         // your code goes here
-        // ...
-
+        int numEdges = 0;
+        for(int i = 0; i < numNodes; i++){
+            for(int j = 0; j < numNodes; j++){
+                if(edges[i][j]) {
+                    numEdges++;
+                }
+            }
+        }
+        return numEdges;
     }
 
     public boolean hasExactlyOneEdge() {
         // post: returns true if and only if there is exactly one edge in this
 
         // your code goes here
-        // ...
-
+        return numEdges() == 1;
     }
 
     public boolean isReflexive() {
         // post: returns true if this represents a reflexive relation
 
         // your code goes here
-        // ...
-
+        for(int i = 0; i < numNodes; i ++){
+            if(!edges[i][i]){
+                return false;
+            }
+        }
+        return true;
     }
 
     public boolean isSymmetric() {
         // post: returns true if and only if this represents a symmetric relation
 
         // your code goes here
-        // ...
-
+        for(int i = 0; i < numNodes; i ++){
+            for(int j = 0; j < numNodes; j++){
+                if(edges[i][j] && !edges[j][i]){
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 
     public boolean isTransitive() {
         // post: returns true if and only if this represents a transitive relation
 
         // your code goes here
-        // ...
-
+        for(int i = 0; i < numNodes; i ++){
+            for(int j = 0; j < numNodes; j++){
+                if(edges[i][j]){
+                    for(int k = 0; k < numNodes; k++){
+                        if(edges[j][k] && !edges[i][k]){
+                            return false;
+                        }
+                    }
+                }
+            }
+        }
+        return true;
     }
 
     public static void main(String[] a) {

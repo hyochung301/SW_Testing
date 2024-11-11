@@ -12,7 +12,27 @@ public class GraphGenerator {
         // post: returns a set of all graphs that have num nodes
 
         // your code goes here
-        // ...
+        Set<Graph> ret = new HashSet<>();
+        long numAllGraphs = (long) Math.pow(2, num*num);
+
+        for(long i = 0; i < numAllGraphs; i++){
+            Graph graph = new Graph(num);
+
+            String binary = Long.toBinaryString(i);
+            binary = String.format("%" + num * num + "s", binary).replace(' ', '0');
+            int curIndex = 0;
+            for(int j = 0; j < num; j++){
+                for(int k = 0; k < num; k++){
+                    if(binary.charAt(curIndex) == '1') {
+                        graph.addEdge(j, k);
+                    }
+                    curIndex ++;
+                }
+            }
+            ret.add(graph);
+        }
+
+        return ret;
 
     }
 
@@ -32,8 +52,29 @@ public class GraphGenerator {
         //       relations with each of the given properties
 
         // your code goes here
-        // ...
+        Set<Graph> allGraphs = generateAllGraphs(num);
+        Set<Graph> ret = new HashSet<>();
 
+        for(Graph graph : allGraphs){
+            boolean match = true;
+            for(String property : properties){
+                try{
+                    Boolean holds = (Boolean) Graph.class.getMethod(property).invoke(graph);
+                    if(!holds){
+                        match = false;
+                        break;
+                    }
+                } catch(Exception e){
+                    e.printStackTrace();
+                    match = false;
+                    break;
+                }
+            }
+            if(match){
+                ret.add(graph);
+            }
+        }
+        return ret;
     }
 
     public static void main(String[] a) throws InvocationTargetException, NoSuchMethodException, IllegalAccessException {
